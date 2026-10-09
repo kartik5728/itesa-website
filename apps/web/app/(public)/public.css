@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme {
+    --color-yellow: #e7d393;
+    --color-white-100: #efefef;
+    --font-sans: "Mona Sans", sans-serif;
+    --font-modern-negra: "Modern Negra", sans-serif;
+    --font-serif: "DM Serif Text", serif;
+}
+
+@utility flex-center {
+    @apply flex justify-center items-center;
+}
+
+@utility col-center {
+    @apply flex flex-col justify-center items-center;
+}
+
+@utility abs-center {
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+@utility text-gradient {
+    background: linear-gradient(to bottom, #ffffff, #898989);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+@utility radial-gradient {
+    background: radial-gradient(circle at center,
+            #434343 0%,
+            #000 50%,
+            transparent 100%);
+}
+
+
+
+@layer components {
+    main {
+        @apply w-full overflow-x-hidden pt-24;
+    }
+
+    /* nav {
+        @apply fixed top-0 z-50 w-full;
+
+        div {
+             @apply flex md:flex-row flex-col md:justify-between items-center gap-5 py-5 lg:px-0 px-5 container mx-auto;
+        }
+
+        p {
+            @apply font-modern-negra text-3xl -mb-2;
+        }
+
+        a {
+            @apply cursor-pointer text-nowrap md:text-base text-sm;
+        }
+
+        ul {
+            @apply flex-center lg:gap-12 gap-7;
+        }
+    } */
+
+  
+}
