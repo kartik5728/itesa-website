@@ -1,33 +1,34 @@
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import AdminHomePage from "./AdminHome";
 
 export default async function AdminPage() {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
+  // Verify the logged-in user on the server
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+    error,
+  } = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect('/login')
+  if (error || !user) {
+    redirect("/login");
   }
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single()
+  // Check the user's role
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
 
   if (
-    profile?.role !== 'super_admin' &&
-    profile?.role !== 'college_admin'
+    profileError ||
+    (profile?.role !== "super_admin" &&
+      profile?.role !== "admin")
   ) {
-    redirect('/403')
+    redirect("/403");
   }
 
-  return (
-    <main>
-      <h1>Admin Dashboard</h1>
-    </main>
-  )
+  return <AdminHomePage />;
 }

@@ -1,6 +1,6 @@
 create type public.app_role as enum (
-  'student',
-  'college_admin',
+  'user',
+  'admin',
   'super_admin'
 );
 
@@ -15,7 +15,7 @@ create table public.profiles (
 
   role public.app_role
     not null
-    default 'student',
+    default 'user',
 
   created_at timestamptz
     not null

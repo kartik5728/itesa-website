@@ -44,7 +44,7 @@
 
 @layer components {
     main {
-        @apply w-full overflow-x-hidden pt-24;
+        @apply w-full overflow-x-hidden;
     }
 
 }
