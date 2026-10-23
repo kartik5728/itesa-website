@@ -1,17 +1,23 @@
+/* =========================================
+   EVENTS HERO
+   Works with the stacked-headline GSAP component.
+   NOTE: bottom offset (64px) must match BOTTOM_OFFSET in EventsHero.tsx
+========================================= */
 
 .hero {
   position: relative;
   isolation: isolate;
   width: 100%;
-  min-height: 100svh;
-  min-height: max(100svh, 560px);
+  height: 100svh;          /* fixed height: the pinned animation measures it */
+  min-height: 560px;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   background: #16051f;
   color: #fff;
 }
+
+/* =========================================
+   BACKGROUND VIDEO
+========================================= */
 
 .video,
 .overlay {
@@ -39,159 +45,128 @@
     rgba(32, 0, 49, 0.35);
 }
 
-.nav {
-  position: relative;
+/* =========================================
+   STACKED HEADLINE (animated by GSAP)
+========================================= */
+
+.stack {
+  position: absolute;
+  left: 3rem;
+  right: 3rem;
+  bottom: 64px;            /* = BOTTOM_OFFSET in the component */
   z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: clamp(20px, 3vw, 44px) clamp(20px, 2.5vw, 44px);
+  will-change: transform;
 }
 
-.logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  color: #fff;
-  text-decoration: none;
-}
-
-.logoMark {
-  font-size: clamp(36px, 3.5vw, 58px);
-  line-height: 0.9;
-  font-weight: 950;
-  letter-spacing: -0.09em;
-}
-
-.degree {
-  font-size: 0.65em;
-  vertical-align: top;
-  letter-spacing: -0.04em;
-}
-
-.logoCaption {
-  font-size: clamp(9px, 0.85vw, 14px);
-  line-height: 1.05;
-  font-weight: 850;
-}
-
-.navActions {
-  display: flex;
-  align-items: center;
-  gap: clamp(12px, 1.7vw, 28px);
-}
-
-.hotStuff,
-.menuButton {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 46px;
-  padding: 0 20px;
-  border-radius: 999px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 800;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.hotStuff {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.menuButton {
-  border: 2px solid #fff12f;
-  background: transparent;
-  cursor: pointer;
-}
-
-.content {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  margin-top: auto;
-  padding: 5vh clamp(20px, 2.5vw, 44px) clamp(34px, 5vh, 68px);
-}
-
-.title {
-  margin: 0;
+.headline {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  font-size: clamp(44px, 6.55vw, 116px);
+  width: 100%;
+  margin: 0;
+
+  font-size: clamp(64px, 7.2vw, 124px);
   font-weight: 950;
-  line-height: 0.98;
-  letter-spacing: -0.055em;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
 }
 
-.titleMask {
+/* Direct children only (.purple, .yellow, .mask).
+   Using ">" keeps the per-letter .char spans inline-block. */
+.headline > span {
   display: block;
   max-width: 100%;
-  overflow: hidden;
-  padding-bottom: 0.05em;
+  white-space: nowrap;
 }
 
-.titleMask > span {
+/* Colors */
+.purple { color: #ad3ff5; }
+.yellow { color: #fff044; }
+.light  { color: #e6dafa; }
+
+/* Clips each line so letters rise out of a mask */
+.mask {
   display: block;
+  overflow: hidden;
+  line-height: 1;            /* a stable line box for the clip */
+  padding: 0.12em 0;
+  margin: -0.12em 0;
 }
 
-.purple {
-  color: #ad3ff5;
+.char {
+  display: inline-block;
+  vertical-align: top;       /* stops baseline alignment from shifting the box */
+  white-space: pre;
+  will-change: transform;
 }
 
-.yellow {
+/* =========================================
+   COMPANY STATEMENT (rises in from below)
+========================================= */
+
+.company {
+  position: absolute;
+  left: 3rem;
+  right: 3rem;
+  bottom: 64px;
+  z-index: 2;
+  visibility: hidden;      /* GSAP's autoAlpha takes over */
+}
+
+.companyHeadline {
+  margin: 0;
   color: #fff044;
+  font-size: clamp(64px, 7vw, 120px);
+  font-weight: 950;
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
 }
 
-.tagline {
-  margin: 20px 0 0;
-  font-size: clamp(14px, 1.3vw, 19px);
-  color: rgba(255, 255, 255, 0.88);
-}
+/* =========================================
+   LARGE DESKTOPS
+========================================= */
 
 @media (min-width: 1600px) {
-  .title {
-    font-size: clamp(116px, 6.55vw, 150px);
+  .headline {
+    font-size: clamp(112px, 7.2vw, 124px);
   }
 }
 
+/* =========================================
+   LAPTOPS AND TABLETS
+========================================= */
+
+@media (max-width: 1200px) {
+  .headline {
+    font-size: clamp(56px, 7.2vw, 92px);
+  }
+
+  .companyHeadline {
+    font-size: clamp(54px, 7vw, 88px);
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
 @media (max-width: 768px) {
-  .hero {
-    min-height: max(90svh, 600px);
+  .stack,
+  .company {
+    left: 20px;
+    right: 20px;
   }
 
-  .nav {
-    padding: 22px 20px;
+  .headline {
+    font-size: clamp(28px, 8vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.055em;
   }
 
-  .hotStuff {
-    display: none;
-  }
-
-  .menuButton {
-    min-height: 40px;
-    padding: 0 16px;
-    font-size: 12px;
-  }
-
-  .content {
-    padding: 0 20px 44px;
-  }
-
-  .title {
-    font-size: clamp(40px, 8.4vw, 66px);
-    line-height: 1.02;
-    letter-spacing: -0.06em;
-  }
-
-  .titleMask {
-    max-width: 100%;
-  }
-
-  .tagline {
-    margin-top: 16px;
+  .companyHeadline {
+    font-size: clamp(44px, 10vw, 76px);
   }
 
   .video {
@@ -199,23 +174,42 @@
   }
 }
 
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
 @media (max-width: 420px) {
-  .logoMark {
-    font-size: 35px;
+  .headline {
+    font-size: clamp(26px, 7.6vw, 36px);
   }
 
-  .logoCaption {
-    font-size: 9px;
-  }
-
-  .title {
-    font-size: clamp(34px, 8.1vw, 42px);
+  .companyHeadline {
+    font-size: clamp(38px, 10vw, 52px);
   }
 }
 
+/* =========================================
+   REDUCED MOTION
+   Show everything stacked and readable, no pin/scroll animation.
+========================================= */
+
 @media (prefers-reduced-motion: reduce) {
-  .video {
-    /* Video remains muted and may still play.
-       Replace with a poster if you want no motion at all. */
+  .hero {
+    height: auto;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 2rem;
+    padding: 6rem 3rem 4rem;
+  }
+
+  .stack,
+  .company {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    visibility: visible;
   }
 }

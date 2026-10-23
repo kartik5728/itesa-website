@@ -1,5 +1,6 @@
 
 import EventsHero from "./components/EventsHero";
+// import EventsStory from "./components/EventsStory";
 import EventsAbout from "./components/EventsAbout";
 
 export default function EventsPage() {
@@ -7,8 +8,6 @@ export default function EventsPage() {
     <main>
       <EventsHero />
       <EventsAbout />
-
-      {/* Add future sections here */}
     </main>
   );
 }
