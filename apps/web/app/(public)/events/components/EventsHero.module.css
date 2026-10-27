@@ -1,0 +1,235 @@
+/* =========================================
+   EVENTS HERO
+   Works with the stacked-headline GSAP component.
+   NOTE: bottom offset (64px) must match BOTTOM_OFFSET in EventsHero.tsx
+========================================= */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100svh;          /* fixed height: the pinned animation measures it */
+  min-height: 560px;
+  overflow: hidden;
+  background: #16051f;
+  color: #fff;
+}
+
+/* =========================================
+   BACKGROUND VIDEO
+========================================= */
+
+.video,
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video {
+  z-index: -2;
+  object-fit: cover;
+  object-position: center;
+}
+
+.overlay {
+  z-index: -1;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 3, 29, 0.48) 0%,
+      rgba(35, 0, 47, 0.55) 45%,
+      rgba(34, 0, 43, 0.94) 100%
+    ),
+    rgba(32, 0, 49, 0.35);
+}
+
+/* =========================================
+   STACKED HEADLINE (animated by GSAP)
+========================================= */
+
+.stack {
+  position: absolute;
+  left: 3rem;
+  right: 3rem;
+  bottom: 64px;            /* = BOTTOM_OFFSET in the component */
+  z-index: 2;
+  will-change: transform;
+}
+
+.headline {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  margin: 0;
+
+  font-size: clamp(64px, 7.2vw, 124px);
+  font-weight: 950;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+/* Direct children only (.purple, .yellow, .mask).
+   Using ">" keeps the per-letter .char spans inline-block. */
+.headline > span {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+/* Colors */
+.purple { color: #ad3ff5; }
+.yellow { color: #fff044; }
+.light  { color: #e6dafa; }
+
+/* Clips each line so letters rise out of a mask */
+.mask {
+  display: block;
+  overflow: hidden;
+  line-height: 1;            /* a stable line box for the clip */
+  padding: 0.12em 0;
+  margin: -0.12em 0;
+}
+
+.char {
+  display: inline-block;
+  vertical-align: top;       /* stops baseline alignment from shifting the box */
+  white-space: pre;
+  will-change: transform;
+}
+
+/* =========================================
+   COMPANY STATEMENT (rises in from below)
+========================================= */
+
+.company {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 3rem;
+  bottom: 64px;
+  z-index: 2;
+  padding: 0 var(--pad, 48px);
+  visibility: hidden;      /* GSAP's autoAlpha takes over */
+}
+
+.companyHeadline {
+  margin: 0;
+  color: #fff044;
+  font-size: clamp(64px, 7vw, 120px);
+  font-weight: 950;
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+}
+
+.companyText {
+  position: static;
+  margin-top: 32px;
+  /* max-width: 1100px; */
+  max-width: 42ch;
+  font-size: clamp(1.25rem, 2.2vw, 2.25rem);
+  line-height: 1.3;
+  color: #fff;
+}
+
+/* =========================================
+   LARGE DESKTOPS
+========================================= */
+
+@media (min-width: 1600px) {
+  .headline {
+    font-size: clamp(112px, 7.2vw, 124px);
+  }
+}
+
+/* =========================================
+   LAPTOPS AND TABLETS
+========================================= */
+
+@media (max-width: 1200px) {
+  .headline {
+    font-size: clamp(56px, 7.2vw, 92px);
+  }
+
+  .companyHeadline {
+    font-size: clamp(54px, 7vw, 88px);
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+  .stack,
+  .company {
+    left: 20px;
+    right: 20px;
+  }
+
+  .headline {
+    font-size: clamp(28px, 8vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.055em;
+  }
+
+  .companyHeadline {
+    font-size: clamp(44px, 10vw, 76px);
+  }
+
+  .video {
+    object-position: 55% center;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 420px) {
+  .headline {
+    font-size: clamp(26px, 7.6vw, 36px);
+  }
+
+  .companyHeadline {
+    font-size: clamp(38px, 10vw, 52px);
+  }
+}
+
+/* =========================================
+   REDUCED MOTION
+   Show everything stacked and readable, no pin/scroll animation.
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero {
+    height: auto;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 2rem;
+    padding: 6rem 3rem 4rem;
+  }
+
+  .stack,
+  .company {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    visibility: visible;
+  }
+}
+
+/* Reduced motion: show everything statically */
+@media (prefers-reduced-motion: reduce) {
+  .company {
+    position: relative;
+    top: auto;
+  }
+}

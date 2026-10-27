@@ -1,0 +1,151 @@
+.section {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: #190822;
+  color: #fff;
+}
+
+/* Full-bleed background images (one per slide, stacked) */
+.bgLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+.bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(25, 8, 34, 0.35), rgba(25, 8, 34, 0.75));
+}
+
+/* Semicircle: a huge circle whose centre sits near the top-left corner.
+   The border is the purple ring, overflow:hidden clips the videos to the inside. */
+.circle {
+  position: absolute;
+  z-index: 2;
+  width: 167vh;
+  height: 167vh;
+  left: calc(8vw - 83.5vh);
+  top: -83.5vh;
+  border: 10vh solid #a84bff;
+  border-radius: 50%;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: #190822;
+}
+
+/* Videos are sized to the viewport and offset so (0,0) of the screen
+   lines up with their top-left; the circle just masks them. */
+.videoWrap {
+  position: absolute;
+  inset: 0;
+}
+.video {
+  position: absolute;
+  left: calc(73.5vh - 8vw);
+  top: 73.5vh;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}
+
+.copyLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.copy {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 51vw;
+  right: 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.counter {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.counter b {
+  color: #3fe0d0;
+  font-weight: 500;
+}
+.counter span {
+  color: #fff044;
+  margin: 0 0.4em;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2.75rem, 5.2vw, 6rem);
+  line-height: 0.95;
+  font-weight: 700;
+  max-width: 12ch;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  pointer-events: auto;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.ctaLabel {
+  padding: 1.1rem 2rem;
+  border-radius: 999px;
+  background: #a84bff;
+}
+.ctaIcon {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #a84bff;
+  transition: transform 0.3s ease;
+}
+.cta:hover .ctaIcon,
+.cta:focus-visible .ctaIcon {
+  transform: translateX(6px);
+}
+.cta:focus-visible {
+  outline: 2px solid #fff044;
+  outline-offset: 4px;
+  border-radius: 999px;
+}
+
+@media (max-width: 768px) {
+  .circle {
+    width: 120vw;
+    height: 120vw;
+    left: -40vw;
+    top: -60vw;
+    border-width: 8vw;
+  }
+  .video {
+    left: 32vw;
+    top: 52vw;
+  }
+  .copy {
+    left: 6vw;
+    justify-content: flex-end;
+    padding-bottom: 12vh;
+  }
+}
