@@ -1,9 +1,12 @@
+import AboutHero from "./components/AboutHero"
+import TeamSection from "./components/TeamSection"
 
 const AboutPage = () => {
   return (
-    <div>
-      About Us 
-    </div>
+   <>
+      <AboutHero />
+      <TeamSection />
+    </>
   )
 }
 
