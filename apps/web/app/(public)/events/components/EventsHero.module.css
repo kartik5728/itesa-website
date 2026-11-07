@@ -1,18 +1,26 @@
 /* =========================================
-   EVENTS HERO
-   Works with the stacked-headline GSAP component.
+   EVENTS HERO  (ITESA theme)
    NOTE: bottom offset (64px) must match BOTTOM_OFFSET in EventsHero.tsx
 ========================================= */
 
 .hero {
+  /* Theme tokens – match the rest of the site */
+  --bg: #02050a;
+  --white: #ffffff;
+  --ice: #cfe6ff;
+  --blue-1: #1a6bff;
+  --blue-2: #3da5ff;
+  --blue-3: #5cc8ff;
+  --accent-gradient: linear-gradient(90deg, var(--blue-1) 0%, var(--blue-2) 60%, var(--blue-3) 100%);
+
   position: relative;
   isolation: isolate;
   width: 100%;
-  height: 100svh;          /* fixed height: the pinned animation measures it */
+  height: 100svh;
   min-height: 560px;
   overflow: hidden;
-  background: #16051f;
-  color: #fff;
+  background: var(--bg);
+  color: var(--white);
 }
 
 /* =========================================
@@ -31,18 +39,26 @@
   z-index: -2;
   object-fit: cover;
   object-position: center;
+  /* Re-tints the purple footage toward blue and darkens it.
+     Remove this line once you swap in a blue-toned video. */
+  filter: hue-rotate(-65deg) saturate(0.9) brightness(0.7) contrast(1.1);
 }
 
 .overlay {
   z-index: -1;
   background:
+    /* soft blue glow, like the stage light on the other pages */
+    radial-gradient(
+      ellipse 70% 50% at 50% 100%,
+      rgba(26, 107, 255, 0.22) 0%,
+      transparent 70%
+    ),
     linear-gradient(
       180deg,
-      rgba(15, 3, 29, 0.48) 0%,
-      rgba(35, 0, 47, 0.55) 45%,
-      rgba(34, 0, 43, 0.94) 100%
-    ),
-    rgba(32, 0, 49, 0.35);
+      rgba(2, 5, 10, 0.6) 0%,
+      rgba(2, 5, 10, 0.55) 45%,
+      rgba(2, 5, 10, 0.96) 100%
+    );
 }
 
 /* =========================================
@@ -66,43 +82,63 @@
   margin: 0;
 
   font-size: clamp(64px, 7.2vw, 124px);
-  font-weight: 950;
+  font-weight: 900;
   line-height: 0.95;
   letter-spacing: -0.045em;
   text-transform: uppercase;
 }
 
-/* Direct children only (.purple, .yellow, .mask).
-   Using ">" keeps the per-letter .char spans inline-block. */
 .headline > span {
   display: block;
   max-width: 100%;
-  white-space: nowrap;
+  white-space: nowrap;     /* desktop: one line each. Overridden on mobile. */
 }
 
-/* Colors */
-.purple { color: #ad3ff5; }
-.yellow { color: #fff044; }
-.light  { color: #e6dafa; }
+/* Line 1: white (like "ABOUT" / "TEAM") */
+.purple {
+  color: var(--white);
+}
 
-/* Clips each line so letters rise out of a mask */
+/* Line 2: blue gradient (like "ITESA") */
+.yellow {
+  display: block;
+  width: fit-content;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 24px rgba(61, 165, 255, 0.35));
+}
+
+/* Line 3 (revealed on scroll): icy white-blue */
+.light {
+  color: var(--ice);
+}
+
 .mask {
   display: block;
-  overflow: hidden;
-  line-height: 1;            /* a stable line box for the clip */
+}
+
+.word {
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;        /* letters rise out of this mask */
+  line-height: 1;
   padding: 0.12em 0;
   margin: -0.12em 0;
+  white-space: nowrap;
 }
 
 .char {
   display: inline-block;
-  vertical-align: top;       /* stops baseline alignment from shifting the box */
+  vertical-align: top;
   white-space: pre;
   will-change: transform;
 }
 
 /* =========================================
-   COMPANY STATEMENT (rises in from below)
+   COMPANY STATEMENT
 ========================================= */
 
 .company {
@@ -117,23 +153,28 @@
 }
 
 .companyHeadline {
+  display: inline-block;
   margin: 0;
-  color: #fff044;
   font-size: clamp(64px, 7vw, 120px);
-  font-weight: 950;
+  font-weight: 900;
   line-height: 0.95;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.05em;
   text-transform: uppercase;
+
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .companyText {
   position: static;
   margin-top: 32px;
-  /* max-width: 1100px; */
   max-width: 42ch;
   font-size: clamp(1.25rem, 2.2vw, 2.25rem);
   line-height: 1.3;
-  color: #fff;
+  color: var(--ice);
 }
 
 /* =========================================
@@ -165,20 +206,49 @@
 ========================================= */
 
 @media (max-width: 768px) {
-  .stack,
-  .company {
-    left: 20px;
-    right: 20px;
+  .stack {
+    left: 16px;
+    right: 16px;
+  }
+
+  .headline,
+  .companyHeadline,
+  .companyText {
+    font-family: var(--font-wide, inherit);
   }
 
   .headline {
-    font-size: clamp(28px, 8vw, 64px);
-    line-height: 1;
-    letter-spacing: -0.055em;
+    font-size: clamp(30px, 9.2vw, 56px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+
+  .headline > span {
+    white-space: normal;
+  }
+
+  .company {
+    left: 16px;
+    right: 16px;
+    top: 0;
+    bottom: auto;
+    padding: 0;
   }
 
   .companyHeadline {
-    font-size: clamp(44px, 10vw, 76px);
+    font-size: clamp(24px, 7.2vw, 40px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: 0;
+  }
+
+  .companyText {
+    margin-top: 20px;
+    max-width: none;
+    font-size: clamp(1rem, 4.4vw, 1.5rem);
+    font-weight: 500;
+    line-height: 1.35;
   }
 
   .video {
@@ -190,19 +260,14 @@
    SMALL MOBILE
 ========================================= */
 
-@media (max-width: 420px) {
+@media (max-width: 380px) {
   .headline {
-    font-size: clamp(26px, 7.6vw, 36px);
-  }
-
-  .companyHeadline {
-    font-size: clamp(38px, 10vw, 52px);
+    font-size: 8.6vw;
   }
 }
 
 /* =========================================
    REDUCED MOTION
-   Show everything stacked and readable, no pin/scroll animation.
 ========================================= */
 
 @media (prefers-reduced-motion: reduce) {
@@ -219,17 +284,10 @@
   .stack,
   .company {
     position: relative;
+    top: auto;
     left: auto;
     right: auto;
     bottom: auto;
     visibility: visible;
-  }
-}
-
-/* Reduced motion: show everything statically */
-@media (prefers-reduced-motion: reduce) {
-  .company {
-    position: relative;
-    top: auto;
   }
 }

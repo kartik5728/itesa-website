@@ -4,13 +4,21 @@ import { useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap/gsap";
 import styles from "./EventsHero.module.css";
 
-// Splits text into per-letter spans (no SplitText plugin needed)
+// Splits text into words (so lines can wrap) and each word into per-letter spans.
 function Chars({ text }: { text: string }) {
+  const words = text.split(" ");
   return (
     <>
-      {text.split("").map((ch, i) => (
-        <span key={i} className={`${styles.char} char`}>
-          {ch === " " ? "\u00A0" : ch}
+      {words.map((word, w) => (
+        <span key={w}>
+          <span className={styles.word}>
+            {word.split("").map((ch, i) => (
+              <span key={i} className={`${styles.char} char`}>
+                {ch}
+              </span>
+            ))}
+          </span>
+          {w < words.length - 1 ? " " : null}
         </span>
       ))}
     </>
@@ -19,7 +27,7 @@ function Chars({ text }: { text: string }) {
 
 const TOP_OFFSET = 120;   // space under nav when the stack reaches the top (px)
 const BOTTOM_OFFSET = 64; // must match `bottom` in .stack CSS
-const GAP = 50;          // space between "THINKING." and "THE TOP EVENT..." (px)
+const GAP = 50;           // space between the stack and the company block (px)
 
 export default function EventsHero() {
   const heroRef = useRef<HTMLElement>(null);
@@ -64,11 +72,10 @@ export default function EventsHero() {
             },
           });
 
-          // y where the stack sits at the end of phase 1 (top edge at TOP_OFFSET)
           const stackYAtTop = () =>
             -(hero.offsetHeight - stack.offsetHeight - BOTTOM_OFFSET - TOP_OFFSET);
 
-          // ---------- PHASE 1 (0 -> 2): stack travels up, letters rise ----------
+          // PHASE 1 (0 -> 2): stack travels up, letters rise
           tl.fromTo(
             stack,
             { y: () => thinking.offsetHeight },
@@ -87,28 +94,29 @@ export default function EventsHero() {
             0.3
           );
 
-         // ---------- PHASE 2 (2 -> 4): stack + company move up TOGETHER ----------
-        // Company starts GAP px below the stack and ends bottom-aligned.
-        // Both travel the same distance, so the gap stays constant.
-        const companyStartY = () => TOP_OFFSET + stack.offsetHeight + GAP;
-        const companyEndY = () =>
-          Math.max(TOP_OFFSET, hero.offsetHeight - company.offsetHeight - BOTTOM_OFFSET);
-        const delta = () => Math.max(0, companyStartY() - companyEndY());
+          // PHASE 2 (2 -> 4): stack + company move up together
+          const companyStartY = () => TOP_OFFSET + stack.offsetHeight + GAP;
+          const companyEndY = () =>
+            Math.max(
+              TOP_OFFSET,
+              hero.offsetHeight - company.offsetHeight - BOTTOM_OFFSET
+            );
+          const delta = () => Math.max(0, companyStartY() - companyEndY());
 
-        tl.to(stack, { y: () => stackYAtTop() - delta(), duration: 2 }, 2);
+          tl.to(stack, { y: () => stackYAtTop() - delta(), duration: 2 }, 2);
 
-        tl.fromTo(
-          company,
-          { y: () => companyStartY(), autoAlpha: 0 },
-          { y: () => companyEndY(), autoAlpha: 1, duration: 2 },
-          2
-        );
+          tl.fromTo(
+            company,
+            { y: () => companyStartY(), autoAlpha: 0 },
+            { y: () => companyEndY(), autoAlpha: 1, duration: 2 },
+            2
+          );
 
-        tl.to(
-          paragraph,
-          { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" },
-          3.2
-        );
+          tl.to(
+            paragraph,
+            { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out" },
+            3.2
+          );
         }
       );
 
@@ -164,11 +172,12 @@ export default function EventsHero() {
           BEST
           <br />
           EVENTS.
-          <br />
         </h2>
         <p ref={paragraphRef} className={styles.companyText}>
           We go beyond creating gatherings to crafting living stories that pull
-          people in, make them feel and leave them thinking.
+          people in, make them feel and leave them thinking. For us, events are
+          more than performances - they’re an opportunity to spark connection
+          and leave audiences spellbound.
         </p>
       </div>
     </section>
