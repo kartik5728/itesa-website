@@ -1,9 +1,18 @@
 .section {
+  /* Theme tokens: same values as EventsHero */
+  --bg: #02050a;
+  --white: #ffffff;
+  --ice: #cfe6ff;
+  --blue-1: #1a6bff;
+  --blue-2: #3da5ff;
+  --blue-3: #5cc8ff;
+  --btn-blue: #0a6cff;
+
   position: relative;
   height: 100vh;
   overflow: hidden;
-  background: #190822;
-  color: #fff;
+  background: var(--bg);
+  color: var(--white);
 }
 
 /* Full-bleed background images (one per slide, stacked) */
@@ -22,11 +31,17 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(25, 8, 34, 0.35), rgba(25, 8, 34, 0.75));
+  background:
+    radial-gradient(
+      ellipse 60% 60% at 20% 20%,
+      rgba(26, 107, 255, 0.18) 0%,
+      transparent 70%
+    ),
+    linear-gradient(90deg, rgba(2, 5, 10, 0.55), rgba(2, 5, 10, 0.88));
 }
 
 /* Semicircle: a huge circle whose centre sits near the top-left corner.
-   The border is the purple ring, overflow:hidden clips the videos to the inside. */
+   The border is the blue ring, overflow:hidden clips the videos to the inside. */
 .circle {
   position: absolute;
   z-index: 2;
@@ -34,11 +49,16 @@
   height: 167vh;
   left: calc(8vw - 83.5vh);
   top: -83.5vh;
-  border: 10vh solid #a84bff;
+  border: 10vh solid var(--blue-1);
   border-radius: 50%;
   overflow: hidden;
   box-sizing: border-box;
-  background: #190822;
+  background: var(--bg);
+  /* neon glow like the ring on the Home page */
+  box-shadow:
+    0 0 6vh rgba(61, 165, 255, 0.45),
+    0 0 18vh rgba(26, 107, 255, 0.3),
+    inset 0 0 4vh rgba(92, 200, 255, 0.35);
 }
 
 /* Videos are sized to the viewport and offset so (0,0) of the screen
@@ -75,15 +95,19 @@
 }
 
 .counter {
+  font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 1rem;
   font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--ice);
 }
 .counter b {
-  color: #3fe0d0;
+  color: var(--blue-3);
   font-weight: 500;
 }
 .counter span {
-  color: #fff044;
+  color: var(--blue-2);
+  opacity: 0.6;
   margin: 0 0.4em;
 }
 
@@ -91,8 +115,10 @@
   margin: 0;
   font-size: clamp(2.75rem, 5.2vw, 6rem);
   line-height: 0.95;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   max-width: 12ch;
+  color: var(--white);
 }
 
 .cta {
@@ -101,7 +127,7 @@
   gap: 6px;
   width: fit-content;
   pointer-events: auto;
-  color: #fff;
+  color: var(--white);
   text-decoration: none;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -110,7 +136,9 @@
 .ctaLabel {
   padding: 1.1rem 2rem;
   border-radius: 999px;
-  background: #a84bff;
+  background: var(--btn-blue);
+  box-shadow: 0 0 24px rgba(10, 108, 255, 0.45);
+  transition: box-shadow 0.3s ease, background 0.3s ease;
 }
 .ctaIcon {
   display: grid;
@@ -118,15 +146,20 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #a84bff;
+  background: var(--btn-blue);
+  box-shadow: 0 0 24px rgba(10, 108, 255, 0.45);
   transition: transform 0.3s ease;
+}
+.cta:hover .ctaLabel,
+.cta:focus-visible .ctaLabel {
+  box-shadow: 0 0 32px rgba(61, 165, 255, 0.65);
 }
 .cta:hover .ctaIcon,
 .cta:focus-visible .ctaIcon {
   transform: translateX(6px);
 }
 .cta:focus-visible {
-  outline: 2px solid #fff044;
+  outline: 2px solid var(--blue-3);
   outline-offset: 4px;
   border-radius: 999px;
 }
